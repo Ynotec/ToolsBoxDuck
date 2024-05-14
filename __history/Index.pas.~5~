@@ -1,0 +1,157 @@
+unit Index;
+
+interface
+
+uses
+  IdHTTP, System.NetEncoding, Clipbrd,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls,
+  Hardware, Vcl.VirtualImage;
+
+
+type
+  TForm1 = class(TForm)
+    PanelHardware: TPanel;
+    PanelHardware_titre: TLabel;
+    PanelHardware_label_os: TLabel;
+    PanelHardware_label_ram: TLabel;
+    PanelHardware_label_cpu: TLabel;
+    PanelHardware_label_dd: TLabel;
+    PanelHardware_label_installw: TLabel;
+    PanelHardware_label_boottime: TLabel;
+    PanelHarware_label_internet: TLabel;
+    bold: TLabel;
+    PanelHardware_label_hostname_output: TLabel;
+    PageControl1: TPageControl;
+    Tools: TTabSheet;
+    Test: TTabSheet;
+    PanelHardware_label_os_output: TLabel;
+    PanelHardware_label_cpu_output: TLabel;
+    PanelHardware_label_dd_output: TLabel;
+    PanelHardware_label_ram_output: TLabel;
+    PanelHardware_label_installw_output: TLabel;
+    PanelHardware_label_boottime_output: TLabel;
+    PanelHardware_label_internet_output: TLabel;
+    Base: TTabSheet;
+    Execute: TButton;
+    Open: TOpenDialog;
+    Code64: TMemo;
+    Clear: TButton;
+    Copy: TButton;
+    Input: TMemo;
+    Encode: TButton;
+    Button1: TButton;
+    Image1: TImage;
+    procedure FormShow(Sender: TObject);
+    procedure ExecuteClick(Sender: TObject);
+    procedure ClearClick(Sender: TObject);
+    procedure CopyClick(Sender: TObject);
+    procedure EncodeClick(Sender: TObject);
+  private
+    { Déclarations privées }
+    Hostname: String;
+    Cpu : String;
+    Ram : String;
+    Internet : Boolean;
+    BootTime : String;
+    InstallW : String;
+    Dd: String;
+    Os: String;
+
+//    function HasInternet: Boolean;
+
+    function GetBase64: String;
+    procedure SetBase64(const Value: String);
+  public
+    { Déclarations publiques }
+    property Base64: String read GetBase64 write setBase64;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.fmx}
+
+function TForm1.GetBase64: String;
+begin
+  Result := Code64.Lines.Text;
+end;
+
+procedure TForm1.SetBase64(const Value: String);
+begin
+  Code64.Lines.Text := Value;
+end;
+
+procedure TForm1.EncodeClick(Sender: TObject);
+begin
+  Base64 := TNetEncoding.Base64.Encode( Input.Text )
+end;
+
+
+
+procedure TForm1.ExecuteClick(Sender: TObject);
+begin
+  Code64.Lines.Clear;
+  Base64 := TNetEncoding.Base64.Encode( Input.Text )
+
+end;
+
+procedure TForm1.ClearClick(Sender: TObject);
+begin
+  Code64.Lines.Clear;
+end;
+
+
+
+procedure TForm1.CopyClick(Sender: TObject);
+begin
+  Clipboard.AsText := Code64.Lines.Text;
+  Code64.Lines.Clear;
+  Code64.Lines.Text := 'Contenu copié dans le presse-papiers.';
+end;
+
+
+procedure TForm1.FormShow(Sender: TObject);
+begin
+   ///////////////////// Panel Hardware
+   ///
+   ///  Vérification de la connexion internet
+    if HasInternet then
+    begin
+    PanelHardware_label_internet_output.Caption := 'Connexion internet OK';
+    PanelHardware_label_internet_output.Font.Color := clGreen;
+    end
+  else
+    begin
+    PanelHardware_label_internet_output.Caption := 'Pas de connexion internet';
+    PanelHardware_label_internet_output.Font.Color := clRed;
+    end;
+
+   /// Récupération des informations dans les variables:
+   Hostname := getHostname;
+   Cpu := getCpu;
+//   Ram := BoolToStr(getRam);
+   BootTime := 'BootTime';
+   InstallW := '01/01/2024';
+   Dd := 'SSD Crucial 1 TO';
+   Os := getOs;
+
+  // Affichage des variables dans le panel
+  PanelHardware_label_hostname_output.Caption := Hostname;
+  PanelHardware_label_cpu_output.Caption := Cpu;
+  PanelHardware_label_ram_output.Caption := Ram;
+  PanelHardware_label_boottime_output.Caption := BootTime;
+  PanelHardware_label_installw_output.Caption := InstallW;
+  PanelHardware_label_dd_output.Caption := Dd;
+  PanelHardware_label_os_output.Caption := Os;
+
+
+
+
+
+
+end;
+
+end.

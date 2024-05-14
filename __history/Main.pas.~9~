@@ -1,0 +1,38 @@
+unit Main;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.MaterialSources, FMX.Layouts, FMX.ExtCtrls, FMX.Objects, FMX.Ani,
+  FMX.StdCtrls, FMX.Controls.Presentation;
+
+type
+  TIndex = class(TForm)
+    BarreMenuVertical: TRectangle;
+    Fond: TRectangle;
+    ColorKeyAnimation1: TColorKeyAnimation;
+    Titre: TLabel;
+    BtnHardware: TCornerButton;
+    IconHardware: TImage;
+    BtnReseau: TCornerButton;
+    IconReseau: TImage;
+    StyleBook1: TStyleBook;
+    BtnTools: TCornerButton;
+    IconTools: TImage;
+    GridPanelLayout1: TGridPanelLayout;
+  private
+    { Déclarations privées }
+  public
+    { Déclarations publiques }
+  end;
+
+var
+  Index: TIndex;
+
+implementation
+
+{$R *.fmx}
+
+end.

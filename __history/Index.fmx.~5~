@@ -1,0 +1,19 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 624
+  ClientWidth = 624
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object RoundRect1: TRoundRect
+    Corners = [BottomLeft, BottomRight]
+    Position.X = 8.000000000000000000
+    Position.Y = -8.000000000000000000
+    Size.Width = 608.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

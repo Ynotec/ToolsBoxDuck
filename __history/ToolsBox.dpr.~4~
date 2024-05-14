@@ -1,0 +1,15 @@
+program ToolsBox;
+
+uses
+  System.StartUpCopy,
+  FMX.Forms,
+  Index in 'Index.pas' {Form1},
+  Hardware in 'Hardware.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
