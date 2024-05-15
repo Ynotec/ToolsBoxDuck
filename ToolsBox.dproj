@@ -274,11 +274,10 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="Main.pas">
-            <Form>Index</Form>
+            <Form>FormIndex</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="Hardware.pas"/>
-        <DCCReference Include="ComputerInfo.pas"/>
+        <DCCReference Include="ClassComputerInfo.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -6,10 +6,11 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.MaterialSources, FMX.Layouts, FMX.ExtCtrls, FMX.Objects, FMX.Ani,
-  FMX.StdCtrls, FMX.Controls.Presentation, ComputerInfo;
+  FMX.StdCtrls, FMX.Controls.Presentation, ClassComputerInfo, IdBaseComponent,
+  IdComponent, IdCustomTransparentProxy, IdSocks;
 
 type
-  TIndex = class(TForm)
+  TFormIndex = class(TForm)
     BarreMenuVertical: TRectangle;
     Fond: TRectangle;
     ColorKeyAnimation1: TColorKeyAnimation;
@@ -41,6 +42,8 @@ type
     CpuOutput: TLabel;
     RamOutput: TLabel;
     DdOutput: TLabel;
+    AdressIp: TLabel;
+    AdressIpOutput: TLabel;
     procedure BtnHardwareClick(Sender: TObject);
     procedure BtnReseauClick(Sender: TObject);
     procedure BtnToolsClick(Sender: TObject);
@@ -52,27 +55,27 @@ type
   end;
 
 var
-  Index: TIndex;
+  TForm: TFormIndex;
 
 implementation
 
 {$R *.fmx}
 
-procedure TIndex.BtnHardwareClick(Sender: TObject);
+procedure TFormIndex.BtnHardwareClick(Sender: TObject);
 begin
   PanelReseau.Visible   := False;
   PanelTools.Visible    := False;
   PanelHardware.Visible := True;
 end;
 
-procedure TIndex.BtnReseauClick(Sender: TObject);
+procedure TFormIndex.BtnReseauClick(Sender: TObject);
 begin
   PanelHardware.Visible := False;
   PanelTools.Visible    := False;
   PanelReseau.Visible   := True;
 end;
 
-procedure TIndex.BtnToolsClick(Sender: TObject);
+procedure TFormIndex.BtnToolsClick(Sender: TObject);
 begin
   PanelReseau.Visible   := False;
   PanelHardware.Visible := False;
@@ -81,19 +84,24 @@ begin
 end;
 
 
-procedure TIndex.FormShow(Sender: TObject);
+procedure TFormIndex.FormShow(Sender: TObject);
 var
-  ComputerInfo : TComputerInfo;
+  ComputerInfoNew : ComputerInfo;
 begin
-  ComputerInfo := TComputerInfo.Create;
+  ComputerInfoNew := ComputerInfo.Create;
   try
-    HostnameOutput.Text := ComputerInfo.GetHostname;
-    OsOutput.Text       := ComputerInfo.GetOs;
-    CpuOutput.Text      := ComputerInfo.GetCPUInfo;
-    RamOutput.Text      := ComputerInfo.GetRAMInfo;
-    DdOutput.Text       := ComputerInfo.GetDiskInfo;
+    // Information Hardware
+    HostnameOutput.Text := ComputerInfoNew.GetHostname;
+    OsOutput.Text       := ComputerInfoNew.GetOs;
+    CpuOutput.Text      := ComputerInfoNew.GetCPUInfo;
+    RamOutput.Text      := ComputerInfoNew.GetRAMInfo;
+    DdOutput.Text       := ComputerInfoNew.GetDiskInfo;
+
+    // Information Réseau
+    ComputerInfoNew.GetNetworkInfo;
+    AdressIpOutput.Text := ComputerInfoNew.IPAddress;
   finally
-    ComputerInfo.Free;
+    ComputerInfoNew.Free;
   end;
 
 

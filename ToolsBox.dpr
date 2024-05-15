@@ -3,14 +3,13 @@ program ToolsBox;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Main in 'Main.pas' {Index},
-  Hardware in 'Hardware.pas',
-  ComputerInfo in 'ComputerInfo.pas';
+  Main in 'Main.pas' {FormIndex},
+  ClassComputerInfo in 'ClassComputerInfo.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.CreateForm(TIndex, Index);
+  Application.CreateForm(TFormIndex, FormIndex);
   Application.Run;
 end.
