@@ -6,7 +6,6 @@ uses
   IdHTTP,
   SysUtils, Windows, ActiveX, ComObj;
 
-function HasInternet: Boolean;
 function getHostname: String;
 function getCpu: String;
 function getOs: String;
@@ -14,27 +13,6 @@ function getRam: String;
 function getDd: String;
 
 implementation
-
-// Check Internet
-  uses
-    System.Net.HttpClient;
-
-  function HasInternet: Boolean;
-  var
-    Client: THTTPClient;
-  begin
-    Client := THTTPClient.Create;
-    try
-      try
-        Client.Get('http://www.Google.com/');
-        Result := True;
-      except
-        Result := False;
-      end;
-    finally
-      Client.Free;
-    end;
-  end;
 
   function getHostname: String;
   begin
@@ -52,6 +30,7 @@ implementation
 
   function getOs: String;
   begin
+    // Fonction à refaire
     Result := 'Windows 11 Pro';
   end;
 
@@ -87,5 +66,7 @@ implementation
 
   end;
   end;
+
+
 
 end.

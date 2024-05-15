@@ -4,8 +4,7 @@ uses
   System.StartUpCopy,
   FMX.Forms,
   Main in 'Main.pas' {Index},
-  Hardware in 'Hardware.pas',
-  ComputerInfo in 'ComputerInfo.pas';
+  Hardware in 'Hardware.pas';
 
 {$R *.res}
 

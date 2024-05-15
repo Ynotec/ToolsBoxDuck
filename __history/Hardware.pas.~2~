@@ -6,6 +6,7 @@ uses
   IdHTTP,
   SysUtils, Windows, ActiveX, ComObj;
 
+function HasInternet: Boolean;
 function getHostname: String;
 function getCpu: String;
 function getOs: String;
@@ -13,6 +14,27 @@ function getRam: String;
 function getDd: String;
 
 implementation
+
+// Check Internet
+  uses
+    System.Net.HttpClient;
+
+  function HasInternet: Boolean;
+  var
+    Client: THTTPClient;
+  begin
+    Client := THTTPClient.Create;
+    try
+      try
+        Client.Get('http://www.Google.com/');
+        Result := True;
+      except
+        Result := False;
+      end;
+    finally
+      Client.Free;
+    end;
+  end;
 
   function getHostname: String;
   begin
@@ -30,7 +52,6 @@ implementation
 
   function getOs: String;
   begin
-    // Fonction Ã  refaire
     Result := 'Windows 11 Pro';
   end;
 
@@ -45,7 +66,7 @@ implementation
     end
     else
     begin
-      Result := 'Erreur lors de la rÃ©cupÃ©ration de la mÃ©moire vive';
+      Result := 'Erreur lors de la récupération de la mémoire vive';
     end;
   end;
 
@@ -62,11 +83,9 @@ implementation
     end
     else
     begin
-      Result := 'Erreur lors de la rÃ©cupÃ©ration des informations du disque';
+      Result := 'Erreur lors de la récupération des informations du disque';
 
   end;
   end;
-
-
 
 end.

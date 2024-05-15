@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.MaterialSources, FMX.Layouts, FMX.ExtCtrls, FMX.Objects, FMX.Ani,
-  FMX.StdCtrls, FMX.Controls.Presentation, ComputerInfo;
+  FMX.StdCtrls, FMX.Controls.Presentation, Hardware;
 
 type
   TIndex = class(TForm)
@@ -82,20 +82,13 @@ end;
 
 
 procedure TIndex.FormShow(Sender: TObject);
-var
-  ComputerInfo : TComputerInfo;
 begin
-  ComputerInfo := TComputerInfo.Create;
-  try
-    HostnameOutput.Text := ComputerInfo.GetHostname;
-    OsOutput.Text       := ComputerInfo.GetOs;
-    CpuOutput.Text      := ComputerInfo.GetCPUInfo;
-    RamOutput.Text      := ComputerInfo.GetRAMInfo;
-    DdOutput.Text       := ComputerInfo.GetDiskInfo;
-  finally
-    ComputerInfo.Free;
-  end;
 
+  HostnameOutput.Text := getHostname;
+  OsOutput.Text       := getOs;
+  CpuOutput.Text      := getCpu;
+  RamOutput.Text      := getRam;
+  DdOutput.Text       := getDd;
 
 end;
 
