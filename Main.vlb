@@ -1,9 +1,6 @@
 ﻿[BarreMenuVertical]
 Coordinates=10,78,121,36
 
-[Fond]
-Coordinates=169,10,44,36
-
 [ColorKeyAnimation1]
 Coordinates=200,1,132,36
 
@@ -16,4 +13,7 @@ Coordinates=200,56,91,36
 [BtnHardware]
 Coordinates=61,10,98,36
 Visible=True
+
+[Fond]
+Coordinates=169,10,44,36
 

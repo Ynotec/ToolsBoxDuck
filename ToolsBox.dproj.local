@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2024/05/14 22:14:32.000.784,=C:\Users\Tony\Documents\Embarcadero\Studio\Projets\Unit1.pas</Transaction>
-    <Transaction>2024/05/14 22:16:51.000.252,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Unit1.fmx=C:\Users\Tony\Documents\Embarcadero\Studio\Projets\Unit1.fmx</Transaction>
-    <Transaction>2024/05/14 22:16:51.000.252,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Unit1.pas=C:\Users\Tony\Documents\Embarcadero\Studio\Projets\Unit1.pas</Transaction>
-    <Transaction>2024/05/14 22:16:56.000.400,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Project1.dproj=C:\Users\Tony\Documents\Embarcadero\Studio\Projets\Project1.dproj</Transaction>
-    <Transaction>2024/05/14 22:18:06.000.343,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\ToolsBox.dproj=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Project1.dproj</Transaction>
-    <Transaction>2024/05/14 22:18:16.000.379,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Index.pas=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Unit1.pas</Transaction>
-    <Transaction>2024/05/14 22:18:16.000.379,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Index.fmx=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Unit1.fmx</Transaction>
-    <Transaction>2024/05/14 22:25:26.000.931,=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Hardware.pas</Transaction>
-    <Transaction>2024/05/14 22:40:55.000.748,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Index.pas=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Main.pas</Transaction>
-    <Transaction>2024/05/14 22:40:55.000.748,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Index.fmx=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Main.fmx</Transaction>
+    <Transaction>2024-05-14 22:14:32.000.784,=C:\Users\Tony\Documents\Embarcadero\Studio\Projets\Unit1.pas</Transaction>
+    <Transaction>2024-05-14 22:16:51.000.252,C:\Users\Tony\Documents\Embarcadero\Studio\Projets\Unit1.fmx=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Unit1.fmx</Transaction>
+    <Transaction>2024-05-14 22:16:51.000.252,C:\Users\Tony\Documents\Embarcadero\Studio\Projets\Unit1.pas=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Unit1.pas</Transaction>
+    <Transaction>2024-05-14 22:16:56.000.400,C:\Users\Tony\Documents\Embarcadero\Studio\Projets\Project1.dproj=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Project1.dproj</Transaction>
+    <Transaction>2024-05-14 22:18:06.000.343,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Project1.dproj=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\ToolsBox.dproj</Transaction>
+    <Transaction>2024-05-14 22:18:16.000.379,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Unit1.pas=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Index.pas</Transaction>
+    <Transaction>2024-05-14 22:18:16.000.379,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Unit1.fmx=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Index.fmx</Transaction>
+    <Transaction>2024-05-14 22:25:26.000.931,=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Hardware.pas</Transaction>
+    <Transaction>2024-05-14 22:40:55.000.748,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Main.pas=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Index.pas</Transaction>
+    <Transaction>2024-05-14 22:40:55.000.748,C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Main.fmx=C:\Users\Tony\Desktop\Projet Delphi\ToolsBoxFmx\Index.fmx</Transaction>
   </Transactions>
 </BorlandProject>

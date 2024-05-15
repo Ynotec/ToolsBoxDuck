@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.MaterialSources, FMX.Layouts, FMX.ExtCtrls, FMX.Objects, FMX.Ani,
-  FMX.StdCtrls, FMX.Controls.Presentation;
+  FMX.StdCtrls, FMX.Controls.Presentation, Hardware;
 
 type
   TIndex = class(TForm)
@@ -30,9 +30,21 @@ type
     PanelTools: TPanel;
     IconInfoTools: TImage;
     TitreInfoTools: TLabel;
+    Hostname: TLabel;
+    Os: TLabel;
+    Cpu: TLabel;
+    Ram: TLabel;
+    Dd: TLabel;
+    Health: TLabel;
+    HostnameOutput: TLabel;
+    OsOutput: TLabel;
+    CpuOutput: TLabel;
+    RamOutput: TLabel;
+    DdOutput: TLabel;
     procedure BtnHardwareClick(Sender: TObject);
     procedure BtnReseauClick(Sender: TObject);
     procedure BtnToolsClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Déclarations privées }
   public
@@ -65,6 +77,18 @@ begin
   PanelReseau.Visible   := False;
   PanelHardware.Visible := False;
   PanelTools.Visible    := True;
+
+end;
+
+
+procedure TIndex.FormShow(Sender: TObject);
+begin
+
+  HostnameOutput.Text := getHostname;
+  OsOutput.Text       := getOs;
+  CpuOutput.Text      := getCpu;
+  RamOutput.Text      := getRam;
+  DdOutput.Text       := getDd;
 
 end;
 
