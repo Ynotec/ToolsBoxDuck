@@ -49,7 +49,6 @@ type
     procedure BtnReseauClick(Sender: TObject);
     procedure BtnToolsClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure ComboBox1Change(Sender: TObject);
   private
     { Déclarations privées }
   public
@@ -58,6 +57,7 @@ type
 
 var
   TForm: TFormIndex;
+  ComputerInfo : TComputerInfo;
 
 implementation
 
@@ -85,13 +85,6 @@ begin
 
 end;
 
-
-procedure TFormIndex.ComboBox1Change(Sender: TObject);
-begin
-  if ComboBox1.ItemIndex <> -1 then
-
-end;
-
 procedure TFormIndex.FormShow(Sender: TObject);
 var
   ComputerInfoNew : TComputerInfo;
@@ -110,8 +103,10 @@ begin
     ComputerInfoNew.GetNetworkInfo;
     // Affichage des informations dans le TMemo
     ReseauInfo.ReadOnly := True;
-    ComputerInfoNew.GetNetworkInterfaces(ComboBox1);
-    ComputerInfoNew.GetFAdapters(ReseauInfo);
+
+    ComputerInfoNew.GetNetworkInterfaces(ComboBox1, ReseauInfo);
+    ComputerInfo.GetNetworkInterfaces(ComboBox1, ReseauInfo);
+
 
   finally
     ComputerInfoNew.Free;

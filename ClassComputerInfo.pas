@@ -27,8 +27,7 @@ type
     function GetOs: string;
     procedure GetNetworkInfo;
     procedure GetFAdapters(Memo: TMemo);
-    procedure GetNetworkInterfaces(ComboBox: TComboBox);
-
+    procedure GetNetworkInterfaces(ComboBox: TComboBox; Memo: TMemo);
   end;
 
 implementation
@@ -155,13 +154,15 @@ begin
   end;
 end;
 
-procedure GetNetworkInterfaces(ComboBox: TComboBox);
+procedure TComputerInfo.GetNetworkInterfaces(ComboBox: TComboBox; Memo: TMemo);
 var
   AdapterInfo: PIP_ADAPTER_INFO;
   AdapterInfoSize: ULONG;
   RetVal: DWORD;
 begin
   ComboBox.Clear;
+  Memo.Lines.Clear;
+
   AdapterInfoSize := SizeOf(IP_ADAPTER_INFO);
   GetMem(AdapterInfo, AdapterInfoSize);
   try
@@ -172,18 +173,65 @@ begin
       GetMem(AdapterInfo, AdapterInfoSize);
       RetVal := GetAdaptersInfo(AdapterInfo, AdapterInfoSize);
     end;
+
     if RetVal = NO_ERROR then
     begin
       while AdapterInfo <> nil do
       begin
-        ComboBox.Items.Add(string(AnsiString(AdapterInfo^.Description)));
+        if (AdapterInfo^.IpAddressList.IpAddress.S <> '0.0.0.0') then
+        begin
+          // Ajouter la description au ComboBox
+          ComboBox.Items.Add(string(AnsiString(AdapterInfo^.Description)));
+
+          // Ajouter les informations de l'adaptateur au Memo
+          Memo.Lines.Add('Nom de l''interface   : ' + string(AnsiString(AdapterInfo^.AdapterName)));
+          Memo.Lines.Add('Description           : ' + string(AnsiString(AdapterInfo^.Description)));
+          Memo.Lines.Add('Adresse IP            : ' + string(AnsiString(AdapterInfo^.IpAddressList.IpAddress.S)));
+          Memo.Lines.Add('Masque de sous-réseau : ' + string(AnsiString(AdapterInfo^.IpAddressList.IpMask.S)));
+          Memo.Lines.Add('Passerelle par défaut : ' + string(AnsiString(AdapterInfo^.GatewayList.IpAddress.S)));
+          Memo.Lines.Add('');
+        end;
         AdapterInfo := AdapterInfo^.Next;
       end;
     end
+    else
+    begin
+      Memo.Lines.Add('GetAdaptersInfo failed with error: ' + IntToStr(RetVal));
+    end;
   finally
     FreeMem(AdapterInfo);
   end;
 end;
+//var
+//  AdapterInfo: PIP_ADAPTER_INFO;
+//  AdapterInfoSize: ULONG;
+//  RetVal: DWORD;
+//begin
+//  ComboBox.Clear;
+//  AdapterInfoSize := SizeOf(IP_ADAPTER_INFO);
+//  GetMem(AdapterInfo, AdapterInfoSize);
+//  try
+//    RetVal := GetAdaptersInfo(AdapterInfo, AdapterInfoSize);
+//    if RetVal = ERROR_BUFFER_OVERFLOW then
+//    begin
+//      FreeMem(AdapterInfo);
+//      GetMem(AdapterInfo, AdapterInfoSize);
+//      RetVal := GetAdaptersInfo(AdapterInfo, AdapterInfoSize);
+//    end;
+//    if RetVal = NO_ERROR then
+//    begin
+//      while AdapterInfo <> nil do
+//      begin
+//        ComboBox.Items.Add(string(AnsiString(AdapterInfo^.Description)));
+//        AdapterInfo := AdapterInfo^.Next;
+//      end;
+//    end
+//  finally
+//    FreeMem(AdapterInfo);
+//  end;
+//end;
+
+
 
 end.
 
