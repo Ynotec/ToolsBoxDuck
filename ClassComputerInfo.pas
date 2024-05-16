@@ -2,109 +2,188 @@ unit ClassComputerInfo;
 
 interface
 
-Uses
-  IdHTTP,
-  IpHlpApi, Winsock2, IpTypes,
-  SysUtils, Windows, ActiveX, ComObj;
+uses
+  IdHTTP, IpHlpApi, Winsock2, IpTypes, SysUtils, Windows, ActiveX, ComObj, FMX.ListBox, FMX.Memo;
 
 type
-  ComputerInfo = class
-  public
-    AdapterName: String;
-    IPAddress: String;
-    SubnetMask: String;
-    Gateway: String;
+  TNetworkAdapter = record
+    AdapterName: string;
+    Description: string;
+    IPAddress: string;
+    SubnetMask: string;
+    Gateway: string;
+    DNS: string;
+  end;
 
+type
+  TComputerInfo = class
+  private
+    FAdapters: array of TNetworkAdapter;
+  public
     function GetHostname: string;
     function GetCPUInfo: string;
     function GetRAMInfo: string;
     function GetDiskInfo: string;
-    function GetNetworkInfo: string;
     function GetOs: string;
+    procedure GetNetworkInfo;
+    procedure GetFAdapters(Memo: TMemo);
+    procedure GetNetworkInterfaces(ComboBox: TComboBox);
+
   end;
 
 implementation
 
-function ComputerInfo.GetOs: string;
+function TComputerInfo.GetOs: string;
 begin
   Result := 'Windows 11 Pro';
 end;
 
-function ComputerInfo.GetHostname: string;
+function TComputerInfo.GetHostname: string;
 begin
   Result := GetEnvironmentVariable('COMPUTERNAME');
-    if ('' = Result) then
-  Result := GetEnvironmentVariable('HOSTNAME');
+  if Result = '' then
+    Result := GetEnvironmentVariable('HOSTNAME');
 end;
 
-function ComputerInfo.GetCPUInfo: string;
+function TComputerInfo.GetCPUInfo: string;
 begin
   Result := GetEnvironmentVariable('PROCESSOR_ARCHITECTURE');
-    if ('' = Result) then
-  Result := 'Une erreur est survenue..';
+  if Result = '' then
+    Result := 'Une erreur est survenue..';
 end;
 
-function ComputerInfo.GetRAMInfo: string;
+procedure TComputerInfo.GetFAdapters(Memo: TMemo);
+var
+  I: Integer;
+begin
+  Memo.Lines.Clear;
+  for I := 0 to High(FAdapters) do
+  begin
+    with FAdapters[I] do
+    begin
+      Memo.Lines.Add('Nom de l''interface   :  ' + AdapterName);
+      Memo.Lines.Add('Description           : ' + Description);
+      Memo.Lines.Add('Adresse IP            : ' + IPAddress);
+      Memo.Lines.Add('Masque de sous-réseau : ' + SubnetMask);
+      Memo.Lines.Add('Passerelle par défaut : ' + Gateway);
+      Memo.Lines.Add('DNS                   : ' + DNS);
+//      Memo.Lines.Add('Adresse MAC : ' + AdressMac);
+      Memo.Lines.Add('');
+    end;
+  end;
+end;
+
+function TComputerInfo.GetRAMInfo: string;
 var
   MemStatus: TMemoryStatusEx;
 begin
-    MemStatus.dwLength := SizeOf(TMemoryStatusEx);
-    if GlobalMemoryStatusEx(MemStatus) then
-    begin
-      Result := Format('%d Mo', [MemStatus.ullTotalPhys div 1024 div 1024]);
-    end
-    else
-    begin
-      Result := 'Erreur lors de la récupération de la mémoire vive';
-    end;
+  MemStatus.dwLength := SizeOf(TMemoryStatusEx);
+  if GlobalMemoryStatusEx(MemStatus) then
+  begin
+    Result := Format('%d Mo', [MemStatus.ullTotalPhys div 1024 div 1024]);
+  end
+  else
+  begin
+    Result := 'Erreur lors de la récupération de la mémoire vive';
+  end;
 end;
 
-function ComputerInfo.GetDiskInfo: string;
+function TComputerInfo.GetDiskInfo: string;
 var
   FreeAvailable, TotalSpace, FreeSpace: Int64;
   Drive: string;
 begin
-    Drive := 'C:\';  // Vous pouvez changer cette lettre en fonction de votre lecteur
-    if GetDiskFreeSpaceEx(PChar(Drive), FreeAvailable, TotalSpace, @FreeSpace) then
-    begin
-      // Conversion des bytes en gigaoctets
-      Result := Format('(%s) %.2f Go de libre sur %.2f Go', [Drive,FreeSpace / 1024 / 1024 / 1024 ,TotalSpace / 1024 / 1024 / 1024]);
-    end
-    else
-    begin
-      Result := 'Erreur lors de la récupération des informations du disque';
-
+  Drive := 'C:\';
+  if GetDiskFreeSpaceEx(PChar(Drive), FreeAvailable, TotalSpace, @FreeSpace) then
+  begin
+    Result := Format('(%s) %.2f Go de libre sur %.2f Go', [Drive, FreeSpace / 1024 / 1024 / 1024, TotalSpace / 1024 / 1024 / 1024]);
+  end
+  else
+  begin
+    Result := 'Erreur lors de la récupération des informations du disque';
   end;
 end;
 
-function ComputerInfo.GetNetworkInfo: string;
+procedure TComputerInfo.GetNetworkInfo;
 var
   AdapterInfo: PIP_ADAPTER_INFO;
   AdapterInfoSize: ULONG;
   RetVal: DWORD;
-
+  DNSAddr: PIP_ADDR_STRING;
+  Adapter: TNetworkAdapter;
 begin
   AdapterInfoSize := SizeOf(IP_ADAPTER_INFO);
   GetMem(AdapterInfo, AdapterInfoSize);
-    try
-      RetVal := GetAdaptersInfo(AdapterInfo, AdapterInfoSize);
-      if RetVal = ERROR_BUFFER_OVERFLOW then
-      begin
-        FreeMem(AdapterInfo);
-        GetMem(AdapterInfo, AdapterInfoSize);
-        RetVal := GetAdaptersInfo(AdapterInfo, AdapterInfoSize);
-      end;
-
-      if RetVal = NO_ERROR then
-      begin
-          AdapterName := AdapterInfo^.Description;
-          IPAddress   := AdapterInfo^.IpAddressList.IpAddress.S;
-          SubnetMask  := AdapterInfo^.IpAddressList.IpMask.S;
-          Gateway     := AdapterInfo^.GatewayList.IpAddress.S;
-          AdapterInfo := AdapterInfo^.Next;
-      end
-    finally
+  try
+    RetVal := GetAdaptersInfo(AdapterInfo, AdapterInfoSize);
+    if RetVal = ERROR_BUFFER_OVERFLOW then
+    begin
       FreeMem(AdapterInfo);
+      GetMem(AdapterInfo, AdapterInfoSize);
+      RetVal := GetAdaptersInfo(AdapterInfo, AdapterInfoSize);
     end;
+
+    if RetVal = NO_ERROR then
+    begin
+      while AdapterInfo <> nil do
+      begin
+        if (AdapterInfo^.IpAddressList.IpAddress.S <> '0.0.0.0') then
+        begin
+          Adapter.AdapterName := string(AnsiString(AdapterInfo^.AdapterName));
+          Adapter.Description := string(AnsiString(AdapterInfo^.Description));
+          Adapter.IPAddress := string(AnsiString(AdapterInfo^.IpAddressList.IpAddress.S));
+          Adapter.SubnetMask := string(AnsiString(AdapterInfo^.IpAddressList.IpMask.S));
+          Adapter.Gateway := string(AnsiString(AdapterInfo^.GatewayList.IpAddress.S));
+
+          DNSAddr := @AdapterInfo^.PrimaryWinsServer;
+          if DNSAddr <> nil then
+            Adapter.DNS := string(AnsiString(DNSAddr^.IpAddress.S));
+
+          // Ajouter l'adaptateur à la liste
+          SetLength(FAdapters, Length(FAdapters) + 1);
+          FAdapters[High(FAdapters)] := Adapter;
+        end;
+        AdapterInfo := AdapterInfo^.Next;
+      end;
+    end
+    else
+    begin
+      Writeln('GetAdaptersInfo failed with error: ', RetVal);
+    end;
+  finally
+    FreeMem(AdapterInfo);
   end;
+end;
+
+procedure GetNetworkInterfaces(ComboBox: TComboBox);
+var
+  AdapterInfo: PIP_ADAPTER_INFO;
+  AdapterInfoSize: ULONG;
+  RetVal: DWORD;
+begin
+  ComboBox.Clear;
+  AdapterInfoSize := SizeOf(IP_ADAPTER_INFO);
+  GetMem(AdapterInfo, AdapterInfoSize);
+  try
+    RetVal := GetAdaptersInfo(AdapterInfo, AdapterInfoSize);
+    if RetVal = ERROR_BUFFER_OVERFLOW then
+    begin
+      FreeMem(AdapterInfo);
+      GetMem(AdapterInfo, AdapterInfoSize);
+      RetVal := GetAdaptersInfo(AdapterInfo, AdapterInfoSize);
+    end;
+    if RetVal = NO_ERROR then
+    begin
+      while AdapterInfo <> nil do
+      begin
+        ComboBox.Items.Add(string(AnsiString(AdapterInfo^.Description)));
+        AdapterInfo := AdapterInfo^.Next;
+      end;
+    end
+  finally
+    FreeMem(AdapterInfo);
+  end;
+end;
+
+end.
 

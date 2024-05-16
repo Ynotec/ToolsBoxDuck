@@ -7,7 +7,8 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.MaterialSources, FMX.Layouts, FMX.ExtCtrls, FMX.Objects, FMX.Ani,
   FMX.StdCtrls, FMX.Controls.Presentation, ClassComputerInfo, IdBaseComponent,
-  IdComponent, IdCustomTransparentProxy, IdSocks;
+  IdComponent, IdCustomTransparentProxy, IdSocks, FMX.Memo.Types, FMX.ScrollBox,
+  FMX.Memo, FMX.ListBox;
 
 type
   TFormIndex = class(TForm)
@@ -42,12 +43,13 @@ type
     CpuOutput: TLabel;
     RamOutput: TLabel;
     DdOutput: TLabel;
-    AdressIp: TLabel;
-    AdressIpOutput: TLabel;
+    ReseauInfo: TMemo;
+    ComboBox1: TComboBox;
     procedure BtnHardwareClick(Sender: TObject);
     procedure BtnReseauClick(Sender: TObject);
     procedure BtnToolsClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
   private
     { Déclarations privées }
   public
@@ -84,11 +86,17 @@ begin
 end;
 
 
+procedure TFormIndex.ComboBox1Change(Sender: TObject);
+begin
+  if ComboBox1.ItemIndex <> -1 then
+
+end;
+
 procedure TFormIndex.FormShow(Sender: TObject);
 var
-  ComputerInfoNew : ComputerInfo;
+  ComputerInfoNew : TComputerInfo;
 begin
-  ComputerInfoNew := ComputerInfo.Create;
+  ComputerInfoNew := TComputerInfo.Create;
   try
     // Information Hardware
     HostnameOutput.Text := ComputerInfoNew.GetHostname;
@@ -98,8 +106,13 @@ begin
     DdOutput.Text       := ComputerInfoNew.GetDiskInfo;
 
     // Information Réseau
+    // Récupération des informations réseau
     ComputerInfoNew.GetNetworkInfo;
-    AdressIpOutput.Text := ComputerInfoNew.IPAddress;
+    // Affichage des informations dans le TMemo
+    ReseauInfo.ReadOnly := True;
+    ComputerInfoNew.GetNetworkInterfaces(ComboBox1);
+    ComputerInfoNew.GetFAdapters(ReseauInfo);
+
   finally
     ComputerInfoNew.Free;
   end;

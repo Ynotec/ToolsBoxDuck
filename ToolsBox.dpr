@@ -4,12 +4,13 @@ uses
   System.StartUpCopy,
   FMX.Forms,
   Main in 'Main.pas' {FormIndex},
-  ClassComputerInfo in 'ClassComputerInfo.pas';
+  ClassComputerInfo in 'ClassComputerInfo.pas',
+  Unit1 in 'Unit1.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.CreateForm(TFormIndex, FormIndex);
+  Application.CreateForm(TFormIndex, TForm);
   Application.Run;
 end.
