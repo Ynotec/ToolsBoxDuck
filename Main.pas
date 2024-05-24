@@ -49,8 +49,10 @@ type
     procedure BtnReseauClick(Sender: TObject);
     procedure BtnToolsClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+
   private
     { Déclarations privées }
+    procedure ChangementBtnColor;
   public
     { Déclarations publiques }
   end;
@@ -63,11 +65,30 @@ implementation
 
 {$R *.fmx}
 
+procedure TFormIndex.ChangementBtnColor;
+begin
+  if PanelReseau.Visible then
+    BtnReseau.StyleLookup := 'CornerOnBtn'
+  else
+    BtnReseau.StyleLookup := 'BtnInterface';
+
+  if PanelHardware.Visible then
+    BtnHardware.StyleLookup := 'CornerOnBtn'
+  else
+    BtnHardware.StyleLookup := 'BtnInterface';
+
+  if PanelTools.Visible then
+    BtnTools.StyleLookup := 'CornerOnBtn'
+  else
+    BtnTools.StyleLookup := 'BtnInterface';
+end;
+
 procedure TFormIndex.BtnHardwareClick(Sender: TObject);
 begin
   PanelReseau.Visible   := False;
   PanelTools.Visible    := False;
   PanelHardware.Visible := True;
+  ChangementBtnColor;
 end;
 
 procedure TFormIndex.BtnReseauClick(Sender: TObject);
@@ -75,13 +96,16 @@ begin
   PanelHardware.Visible := False;
   PanelTools.Visible    := False;
   PanelReseau.Visible   := True;
+  ChangementBtnColor;
 end;
 
 procedure TFormIndex.BtnToolsClick(Sender: TObject);
 begin
+
   PanelReseau.Visible   := False;
   PanelHardware.Visible := False;
   PanelTools.Visible    := True;
+  ChangementBtnColor;
 
 end;
 
@@ -90,6 +114,7 @@ var
   ComputerInfoNew : TComputerInfo;
 begin
   ComputerInfoNew := TComputerInfo.Create;
+  ChangementBtnColor;
   try
     // Information Hardware
     HostnameOutput.Text := ComputerInfoNew.GetHostname;
@@ -111,6 +136,8 @@ begin
   finally
     ComputerInfoNew.Free;
   end;
+
+
 
 
 end;
