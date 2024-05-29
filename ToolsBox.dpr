@@ -5,7 +5,7 @@ uses
   FMX.Forms,
   Main in 'Main.pas' {FormIndex},
   ClassComputerInfo in 'ClassComputerInfo.pas',
-  Unit1 in 'Unit1.pas';
+  Reseau in 'Reseau.pas';
 
 {$R *.res}
 

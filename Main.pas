@@ -125,12 +125,11 @@ begin
 
     // Information Réseau
     // Récupération des informations réseau
-    ComputerInfoNew.GetNetworkInfo;
+    ComputerInfoNew.GetNetworkInfo(ComboBox1);
     // Affichage des informations dans le TMemo
     ReseauInfo.ReadOnly := True;
 
-    ComputerInfoNew.GetNetworkInterfaces(ComboBox1, ReseauInfo);
-    ComputerInfo.GetNetworkInterfaces(ComboBox1, ReseauInfo);
+    ComboBox1.ItemIndex := 0;
 
 
   finally

@@ -1,0 +1,66 @@
+unit Reseau;
+
+interface
+
+uses
+  System.SysUtils, Winapi.Windows;
+
+function TestConnection(const IPAddress: string; const Port: string = ''): string;
+
+implementation
+
+function RunCommandAndGetOutput(const Command: string): string;
+var
+  SecurityAttributes: TSecurityAttributes;
+  StartupInfo: TStartupInfo;
+  ProcessInfo: TProcessInformation;
+  PipeRead, PipeWrite: THandle;
+  Buffer: array[0..255] of AnsiChar;
+  BytesRead: DWORD;
+  Output: string;
+begin
+  Result := '';
+  FillChar(SecurityAttributes, SizeOf(SecurityAttributes), 0);
+  SecurityAttributes.nLength := SizeOf(SecurityAttributes);
+  SecurityAttributes.bInheritHandle := TRUE;
+
+  if CreatePipe(PipeRead, PipeWrite, @SecurityAttributes, 0) then
+  try
+    FillChar(StartupInfo, SizeOf(StartupInfo), 0);
+    StartupInfo.cb := SizeOf(StartupInfo);
+    StartupInfo.hStdOutput := PipeWrite;
+    StartupInfo.hStdError := PipeWrite;
+    StartupInfo.dwFlags := STARTF_USESTDHANDLES;
+
+    if CreateProcess(nil, PChar('cmd.exe /C ' + Command), nil, nil, TRUE, 0, nil, nil, StartupInfo, ProcessInfo) then
+    try
+      CloseHandle(PipeWrite);
+      while ReadFile(PipeRead, Buffer, SizeOf(Buffer), BytesRead, nil) do
+      begin
+        if BytesRead = 0 then Break;
+        Output := Output + string(Buffer, BytesRead);
+      end;
+      WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
+      Result := Output;
+    finally
+      CloseHandle(ProcessInfo.hProcess);
+      CloseHandle(ProcessInfo.hThread);
+    end;
+  finally
+    CloseHandle(PipeRead);
+  end;
+end;
+
+function TestConnection(const IPAddress: string; const Port: string = ''): string;
+var
+  Command: string;
+begin
+  if Port = '' then
+    Command := Format('ping %s', [IPAddress])
+  else
+    Command := Format('powershell.exe -Command "Test-NetConnection %s -Port %s"', [IPAddress, Port]);
+
+  Result := RunCommandAndGetOutput(Command);
+end;
+
+end.

@@ -278,7 +278,7 @@
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="ClassComputerInfo.pas"/>
-        <DCCReference Include="Unit1.pas"/>
+        <DCCReference Include="Reseau.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
