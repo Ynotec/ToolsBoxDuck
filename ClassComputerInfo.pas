@@ -149,7 +149,7 @@ begin
     end
     else
     begin
-      Writeln('GetAdaptersInfo failed with error: ', RetVal);
+      Writeln('GetAdaptersInfo a rencontré une erreur : ', RetVal);
     end;
   finally
     FreeMem(AdapterInfo);
@@ -157,12 +157,12 @@ begin
 end;
 
 procedure TComputerInfo.GetNetworkInterfaces(ComboBox: TComboBox; Memo: TMemo);
+
 var
   SelectedIndex : Integer;
 
 begin
   Memo.Lines.Clear;
-  ComboBox.ItemIndex := 3;
   SelectedIndex := ComboBox.ItemIndex;
 
   if (SelectedIndex >= 0) and (SelectedIndex < Length(FAdapters)) then

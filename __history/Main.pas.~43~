@@ -1,0 +1,144 @@
+unit Main;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.MaterialSources, FMX.Layouts, FMX.ExtCtrls, FMX.Objects, FMX.Ani,
+  FMX.StdCtrls, FMX.Controls.Presentation, ClassComputerInfo, IdBaseComponent,
+  IdComponent, IdCustomTransparentProxy, IdSocks, FMX.Memo.Types, FMX.ScrollBox,
+  FMX.Memo, FMX.ListBox;
+
+type
+  TFormIndex = class(TForm)
+    BarreMenuVertical: TRectangle;
+    Fond: TRectangle;
+    ColorKeyAnimation1: TColorKeyAnimation;
+    Titre: TLabel;
+    BtnHardware: TCornerButton;
+    IconHardware: TImage;
+    BtnReseau: TCornerButton;
+    IconReseau: TImage;
+    StyleBook1: TStyleBook;
+    BtnTools: TCornerButton;
+    IconTools: TImage;
+    PanelHardware: TPanel;
+    IconInfoHardware: TImage;
+    TitreInfoHw: TLabel;
+    PanelReseau: TPanel;
+    IconInfoReseau: TImage;
+    TitreInfoReseau: TLabel;
+    PanelTools: TPanel;
+    IconInfoTools: TImage;
+    TitreInfoTools: TLabel;
+    Hostname: TLabel;
+    Os: TLabel;
+    Cpu: TLabel;
+    Ram: TLabel;
+    Dd: TLabel;
+    Health: TLabel;
+    HostnameOutput: TLabel;
+    OsOutput: TLabel;
+    CpuOutput: TLabel;
+    RamOutput: TLabel;
+    DdOutput: TLabel;
+    ReseauInfo: TMemo;
+    ComboBox1: TComboBox;
+    procedure BtnHardwareClick(Sender: TObject);
+    procedure BtnReseauClick(Sender: TObject);
+    procedure BtnToolsClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+
+  private
+    { Déclarations privées }
+    procedure ChangementBtnColor;
+  public
+    { Déclarations publiques }
+  end;
+
+var
+  TForm: TFormIndex;
+  ComputerInfo : TComputerInfo;
+
+implementation
+
+{$R *.fmx}
+
+procedure TFormIndex.ChangementBtnColor;
+begin
+  if PanelReseau.Visible then
+    BtnReseau.StyleLookup := 'CornerOnBtn'
+  else
+    BtnReseau.StyleLookup := 'BtnInterface';
+
+  if PanelHardware.Visible then
+    BtnHardware.StyleLookup := 'CornerOnBtn'
+  else
+    BtnHardware.StyleLookup := 'BtnInterface';
+
+  if PanelTools.Visible then
+    BtnTools.StyleLookup := 'CornerOnBtn'
+  else
+    BtnTools.StyleLookup := 'BtnInterface';
+end;
+
+procedure TFormIndex.BtnHardwareClick(Sender: TObject);
+begin
+  PanelReseau.Visible   := False;
+  PanelTools.Visible    := False;
+  PanelHardware.Visible := True;
+  ChangementBtnColor;
+end;
+
+procedure TFormIndex.BtnReseauClick(Sender: TObject);
+begin
+  PanelHardware.Visible := False;
+  PanelTools.Visible    := False;
+  PanelReseau.Visible   := True;
+  ChangementBtnColor;
+end;
+
+procedure TFormIndex.BtnToolsClick(Sender: TObject);
+begin
+
+  PanelReseau.Visible   := False;
+  PanelHardware.Visible := False;
+  PanelTools.Visible    := True;
+  ChangementBtnColor;
+
+end;
+
+procedure TFormIndex.FormShow(Sender: TObject);
+var
+  ComputerInfoNew : TComputerInfo;
+begin
+  ComputerInfoNew := TComputerInfo.Create;
+  ChangementBtnColor;
+  try
+    // Information Hardware
+    HostnameOutput.Text := ComputerInfoNew.GetHostname;
+    OsOutput.Text       := ComputerInfoNew.GetOs;
+    CpuOutput.Text      := ComputerInfoNew.GetCPUInfo;
+    RamOutput.Text      := ComputerInfoNew.GetRAMInfo;
+    DdOutput.Text       := ComputerInfoNew.GetDiskInfo;
+
+    // Information Réseau
+    // Récupération des informations réseau
+    ComputerInfoNew.GetNetworkInfo(ComboBox1);
+    // Affichage des informations dans le TMemo
+    ReseauInfo.ReadOnly := True;
+
+    ComboBox1.ItemIndex := 0;
+    ComputerInfoNew.GetNetworkInterfaces(ComboBox1, ReseauInfo)
+
+  finally
+    ComputerInfoNew.Free;
+  end;
+
+
+
+
+end;
+
+end.

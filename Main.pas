@@ -49,6 +49,7 @@ type
     procedure BtnReseauClick(Sender: TObject);
     procedure BtnToolsClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -59,7 +60,7 @@ type
 
 var
   TForm: TFormIndex;
-  ComputerInfo : TComputerInfo;
+  ComputerInfoNew : TComputerInfo;
 
 implementation
 
@@ -82,6 +83,8 @@ begin
   else
     BtnTools.StyleLookup := 'BtnInterface';
 end;
+
+
 
 procedure TFormIndex.BtnHardwareClick(Sender: TObject);
 begin
@@ -109,9 +112,12 @@ begin
 
 end;
 
+procedure TFormIndex.ComboBox1Change(Sender: TObject);
+begin
+  ComputerInfoNew.GetNetworkInterfaces(ComboBox1, ReseauInfo);
+end;
+
 procedure TFormIndex.FormShow(Sender: TObject);
-var
-  ComputerInfoNew : TComputerInfo;
 begin
   ComputerInfoNew := TComputerInfo.Create;
   ChangementBtnColor;
@@ -124,16 +130,20 @@ begin
     DdOutput.Text       := ComputerInfoNew.GetDiskInfo;
 
     // Information Réseau
-    // Récupération des informations réseau
+    // Récupération des informations réseau dans le combobox
     ComputerInfoNew.GetNetworkInfo(ComboBox1);
-    // Affichage des informations dans le TMemo
+    // Mettre en lecture seule le Tmemo ReseauInfo
     ReseauInfo.ReadOnly := True;
 
+    // Attribuer la valeur 0 à la combobox ce qui change l'état du combobox et lance la procedure GetNetworkInterfaces
+    // Ce qui permet d'afficher une valeur directement au lancement du programme dans le Tmemo
     ComboBox1.ItemIndex := 0;
 
 
+
+
   finally
-    ComputerInfoNew.Free;
+
   end;
 
 
