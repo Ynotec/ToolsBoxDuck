@@ -18,9 +18,6 @@ Visible=True
 [Fond]
 Coordinates=169,10,44,36
 
-[PanelReseau]
-Coordinates=190,357,91,36
-
 [StyleBook1]
 Coordinates=101,357,80,36
 
@@ -60,9 +57,6 @@ Coordinates=116,77,101,146
 [BtnTools]
 Coordinates=448,357,65,36
 
-[BtnReseau]
-Coordinates=661,1,78,36
-
 [Health]
 Coordinates=387,309,52,58
 
@@ -101,4 +95,10 @@ Coordinates=17,77,94,58
 
 [IconInfoHardware]
 Coordinates=0,0,116,58
+
+[PanelNetwork]
+Coordinates=190,357,91,36
+
+[BtnNetwork]
+Coordinates=661,1,78,36
 
