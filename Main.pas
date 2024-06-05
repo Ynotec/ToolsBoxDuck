@@ -8,7 +8,9 @@ uses
   FMX.MaterialSources, FMX.Layouts, FMX.ExtCtrls, FMX.Objects, FMX.Ani,
   FMX.StdCtrls, FMX.Controls.Presentation, ClassComputerInfo, IdBaseComponent,
   IdComponent, IdCustomTransparentProxy, IdSocks, FMX.Memo.Types, FMX.ScrollBox,
-  FMX.Memo, FMX.ListBox;
+  FMX.Memo, FMX.ListBox, FMX.ImgList, System.ImageList, Reseau, IdRawBase,
+  IdRawClient, IdIcmpClient, System.Diagnostics, FMXTee.Engine, FMXTee.Series,
+  FMXTee.Procs, FMXTee.Chart, IdTCPConnection, IdTCPClient;
 
 type
   TFormIndex = class(TForm)
@@ -45,11 +47,31 @@ type
     DdOutput: TLabel;
     ReseauInfo: TMemo;
     ComboBox1: TComboBox;
+    TestHTTP_Input: TMemo;
+    TestHTTP_Label: TLabel;
+    TestHTTP_Check: TCornerButton;
+    TestHTTP_Icon: TGlyph;
+    ImageList1: TImageList;
+    TestPing_Label: TLabel;
+    TestPing_Input: TMemo;
+    TestPing_Check: TCornerButton;
+    IdIcmpClient1: TIdIcmpClient;
+    Reseau_Output: TMemo;
+    TestTCP_Label: TLabel;
+    TestTCP_Ip_Input: TMemo;
+    TestTCP_Input: TMemo;
+    TestTCP_Check: TCornerButton;
+    Chart1: TChart;
+    Series2: TFastLineSeries;
+    Timer1: TTimer;
+    IdTCPClient1: TIdTCPClient;
     procedure BtnHardwareClick(Sender: TObject);
     procedure BtnNetworkClick(Sender: TObject);
     procedure BtnToolsClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
+    procedure TestHTTP_CheckClick(Sender: TObject);
+    procedure TestPing_CheckClick(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -62,6 +84,7 @@ type
 var
   TForm: TFormIndex;
   ComputerInfoNew : TComputerInfo;
+  Count : Integer;
 
 implementation
 
@@ -85,6 +108,26 @@ begin
   else
     BtnTools.StyleLookup := 'BtnInterface';
 end;
+
+procedure TFormIndex.TestHTTP_CheckClick(Sender: TObject);
+var
+  resultat : Boolean;
+begin
+  resultat := TestHTTP(TestHTTP_Input);
+  if resultat then
+    TestHTTP_Icon.ImageIndex := 2
+  else
+    TestHTTP_Icon.ImageIndex := 1;
+end;
+
+procedure TFormIndex.TestPing_CheckClick(Sender: TObject);
+begin
+  Reseau_Output.Lines.Clear;
+  PingIP(TestPing_Input.Text, Reseau_Output);
+
+end;
+
+
 
 procedure TFormIndex.PanelSwitchVisible(VisiblePanel: TPanel);
 begin

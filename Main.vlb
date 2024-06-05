@@ -9,7 +9,7 @@ Coordinates=200,1,132,36
 Coordinates=10,10,41,58
 
 []
-Coordinates=661,111,91,36
+Coordinates=661,276,91,36
 
 [BtnHardware]
 Coordinates=61,10,89,36
@@ -97,8 +97,27 @@ Coordinates=17,77,94,58
 Coordinates=0,0,116,58
 
 [PanelNetwork]
-Coordinates=190,357,91,36
+Coordinates=190,357,94,36
 
 [BtnNetwork]
-Coordinates=661,1,78,36
+Coordinates=661,1,81,36
+
+[TestHTTP_Input]
+Coordinates=387,155,109,58
+
+[TestHTTP_Icon]
+Coordinates=661,111,104,36
+
+[TestHTTP_Label]
+Coordinates=0,0,111,58
+
+[ImageList1]
+Coordinates=661,166,77,36
+
+[TestHTTP_Check]
+Coordinates=661,221,116,36
+
+[TestPing_Label]
+Coordinates=534,386,53,58
+Visible=True
 

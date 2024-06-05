@@ -1,0 +1,36 @@
+unit Reseau;
+
+interface
+
+uses
+  System.SysUtils, Winapi.Windows,IdHTTP, ActiveX, ComObj, FMX.Memo ;
+
+function TestHTTP(Memo: TMemo): Boolean;
+
+implementation
+
+uses
+    System.Net.HttpClient, System.Net.URLClient;
+
+
+
+function TestHTTP(Memo: TMemo): Boolean;
+var
+  Client: THTTPClient;
+  Response: IHTTPResponse;
+begin
+  Client := THTTPClient.Create;
+  try
+    try
+      Response := Client.Get(string(Memo.Lines.Text));
+      Result := Response.StatusCode = 200;
+    except
+      on E: ENetHTTPClientException do
+        Result := False;
+    end;
+  finally
+    Client.Free;
+  end;
+end;
+
+end.

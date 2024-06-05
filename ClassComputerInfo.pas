@@ -33,8 +33,14 @@ type
 implementation
 
 function TComputerInfo.GetOs: string;
+var
+  Os       : string;
+  PosStart : Integer;
 begin
-  Result := 'Windows 11 Pro';
+  Os := (TOSVersion.ToString);
+  PosStart := Pos('(', Os);
+  Os := Copy(Os, 1, PosStart - 1);
+  Result := Os;
 end;
 
 function TComputerInfo.GetHostname: string;
@@ -66,7 +72,6 @@ begin
       Memo.Lines.Add('Masque de sous-réseau : ' + SubnetMask);
       Memo.Lines.Add('Passerelle par défaut : ' + Gateway);
       Memo.Lines.Add('DNS                   : ' + DNS);
-//      Memo.Lines.Add('Adresse MAC : ' + AdressMac);
       Memo.Lines.Add('');
     end;
   end;
